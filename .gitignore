@@ -137,3 +137,16 @@ dist
 # Vite logs files
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
+
+# Add build output to gitignore
+dist/
+
+# Add coverage output to gitignore
+coverage/
+.nyc_output/
+
+# Add JSCPD output to gitignore
+.jscpd/
+
+# Add Husky directory to gitignore (it will be created during npm install)
+.husky/

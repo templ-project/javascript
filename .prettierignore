@@ -1,0 +1,12 @@
+# Ignore files that don't need formatting
+LICENSE
+.gitignore
+.jshintrc
+.prettierignore
+.github/
+node_modules/
+dist/
+coverage/
+.jscpd/
+*.lock
+*.log

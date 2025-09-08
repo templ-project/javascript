@@ -1,0 +1,22 @@
+{
+  "esversion": 2022,
+  "module": true,
+  "strict": true,
+  "globalstrict": true,
+  "undef": true,
+  "unused": true,
+  "varstmt": false,
+  "browser": false,
+  "node": true,
+  "predef": [
+    "console",
+    "process",
+    "Buffer",
+    "__dirname",
+    "__filename",
+    "global",
+    "exports",
+    "module",
+    "require"
+  ]
+}
