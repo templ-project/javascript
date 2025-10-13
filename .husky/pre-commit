@@ -1,1 +1,9 @@
 npx lint-staged
+
+npm run duplicate-check
+
+npm run license-check
+
+npm audit --audit-level=moderate
+
+git add .

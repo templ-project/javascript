@@ -1,5 +1,3 @@
-npm audit --audit-level=moderate
-
 npm run test
 
 npm run build
