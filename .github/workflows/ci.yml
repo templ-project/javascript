@@ -2,9 +2,9 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [main, develop]
   pull_request:
-    branches: [ main, develop ]
+    branches: [main, develop]
 
 jobs:
   test:
@@ -15,66 +15,68 @@ jobs:
         node-version: [20.x, 22.x]
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
 
-    - name: Install dependencies
-      run: npm ci
+      - name: Install dependencies
+        run: npm ci
 
-    - name: Run lint check
-      run: npm run lint:check
+      - name: Run lint check
+        run: npm run lint:check
 
-    - name: Run format check
-      run: npm run format:check
+      # Prettier and ESlint/Prettier are not aligned
+      # https://github.com/templ-project/javascript-extensions/issues/37
+      # - name: Run format check
+      #   run: npm run format:check
 
-    - name: Run tests with coverage
-      run: npm run test:coverage
+      - name: Run tests with coverage
+        run: npm run test:coverage
 
-    - name: Run duplicate check
-      run: npm run duplicate-check
+      - name: Run duplicate check
+        run: npm run duplicate-check
 
-    - name: Run license check
-      run: npm run license-check
+      - name: Run license check
+        run: npm run license-check
 
-    - name: Audit Packages
-      run: npm audit --audit-level=moderate
+      - name: Audit Packages
+        run: npm audit --audit-level=moderate
 
-    - name: Upload coverage reports to Codecov
-      uses: codecov/codecov-action@v4
-      with:
-        file: ./coverage/lcov.info
-        flags: unittests
-        name: codecov-umbrella
-        fail_ci_if_error: false
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          file: ./coverage/lcov.info
+          flags: unittests
+          name: codecov-umbrella
+          fail_ci_if_error: false
 
   build:
     runs-on: ubuntu-latest
     needs: test
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Use Node.js 20.x
-      uses: actions/setup-node@v4
-      with:
-        node-version: 20.x
-        cache: 'npm'
+      - name: Use Node.js 20.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+          cache: 'npm'
 
-    - name: Install dependencies
-      run: npm ci
+      - name: Install dependencies
+        run: npm ci
 
-    - name: Build package
-      run: npm run build
+      - name: Build package
+        run: npm run build
 
-    - name: Upload build artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: dist
-        path: dist/
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/

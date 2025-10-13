@@ -1,10 +1,10 @@
 {
   "statistics": {
-    "detectionDate": "2025-10-13T21:22:11.580Z",
+    "detectionDate": "2025-10-14T09:51:52.742Z",
     "formats": {
       "javascript": {
         "sources": {
-          "/Users/dragosc/Workspace/gh--templ-project/javascript/src/lib/greeter.spec.js": {
+          "/Users/dragoscirjan/Workspace/Me/gh--templ-project/javascript/src/lib/greeter.spec.js": {
             "lines": 136,
             "tokens": 1359,
             "sources": 1,
@@ -16,7 +16,7 @@
             "newDuplicatedLines": 0,
             "newClones": 0
           },
-          "/Users/dragosc/Workspace/gh--templ-project/javascript/src/lib/greeter.js": {
+          "/Users/dragoscirjan/Workspace/Me/gh--templ-project/javascript/src/lib/greeter.js": {
             "lines": 79,
             "tokens": 210,
             "sources": 1,
@@ -28,7 +28,7 @@
             "newDuplicatedLines": 0,
             "newClones": 0
           },
-          "/Users/dragosc/Workspace/gh--templ-project/javascript/src/index.spec.js": {
+          "/Users/dragoscirjan/Workspace/Me/gh--templ-project/javascript/src/index.spec.js": {
             "lines": 39,
             "tokens": 336,
             "sources": 1,
@@ -40,9 +40,9 @@
             "newDuplicatedLines": 0,
             "newClones": 0
           },
-          "/Users/dragosc/Workspace/gh--templ-project/javascript/src/index.js": {
+          "/Users/dragoscirjan/Workspace/Me/gh--templ-project/javascript/src/index.js": {
             "lines": 20,
-            "tokens": 76,
+            "tokens": 80,
             "sources": 1,
             "clones": 0,
             "duplicatedLines": 0,
@@ -52,9 +52,9 @@
             "newDuplicatedLines": 0,
             "newClones": 0
           },
-          "/Users/dragosc/Workspace/gh--templ-project/javascript/src/cli.js": {
+          "/Users/dragoscirjan/Workspace/Me/gh--templ-project/javascript/src/cli.js": {
             "lines": 11,
-            "tokens": 32,
+            "tokens": 34,
             "sources": 1,
             "clones": 0,
             "duplicatedLines": 0,
@@ -67,7 +67,7 @@
         },
         "total": {
           "lines": 285,
-          "tokens": 2013,
+          "tokens": 2019,
           "sources": 5,
           "clones": 0,
           "duplicatedLines": 0,
@@ -81,7 +81,7 @@
     },
     "total": {
       "lines": 285,
-      "tokens": 2013,
+      "tokens": 2019,
       "sources": 5,
       "clones": 0,
       "duplicatedLines": 0,
@@ -93,5 +93,5 @@
     }
   },
   "duplicates": [],
-  "filename": "/Users/dragosc/Workspace/gh--templ-project/javascript/node_modules/@jscpd/html-reporter/dist/templates/main.pug"
+  "filename": "/Users/dragoscirjan/Workspace/Me/gh--templ-project/javascript/node_modules/@jscpd/html-reporter/dist/templates/main.pug"
 }

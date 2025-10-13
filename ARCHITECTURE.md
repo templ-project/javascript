@@ -49,6 +49,7 @@ This template is designed as a minimal but complete starting point for JavaScrip
 This is a JavaScript template (TypeScript has its own template).
 
 JSDoc provides:
+
 - Type hints without compilation
 - Documentation generation
 - IDE autocomplete
@@ -105,6 +106,7 @@ The template builds 4 formats to support different use cases:
 ### Why Multiple Formats?
 
 Different consumers have different needs:
+
 - Library authors: ESM + CJS
 - Browser scripts: IIFE
 - Import maps: Browser ESM
@@ -124,6 +126,7 @@ src/
 ```
 
 **Why co-located tests?**
+
 - Easier to find related tests
 - Encourages test writing
 - Clear file structure
@@ -185,6 +188,7 @@ Uses `@templ-project/*` packages for consistency:
 - `@templ-project/vitest`
 
 **Benefits:**
+
 - Single source of truth
 - Easy updates (bump version)
 - Consistent across projects
@@ -196,15 +200,15 @@ Users can extend configurations:
 
 ```javascript
 // eslint.config.mjs
-import templConfig from '@templ-project/eslint';
+import templConfig from "@templ-project/eslint";
 
 export default [
   ...templConfig,
   {
     rules: {
       // Your overrides
-    }
-  }
+    },
+  },
 ];
 ```
 
@@ -224,6 +228,7 @@ export default [
 ```
 
 **Why this structure?**
+
 - Modern Node.js respects `exports`
 - Conditional exports for different environments
 - Prevents deep imports (encapsulation)
@@ -236,6 +241,7 @@ export default [
 ```
 
 Only ships compiled code, not source. Users don't need:
+
 - Source files (they use dist/)
 - Tests
 - Config files
@@ -254,6 +260,7 @@ Keeps published package small.
 ### No Runtime Dependencies
 
 The template produces zero-dependency builds:
+
 - Smaller bundle size
 - No supply chain attacks
 - Faster installs
@@ -273,6 +280,7 @@ The template produces zero-dependency builds:
 ### Extension Points
 
 Users should add based on needs:
+
 - Testing: E2E (Playwright, Cypress)
 - Bundling: Advanced webpack/vite config
 - Deployment: CI/CD for their platform
@@ -303,6 +311,7 @@ Users should add based on needs:
 ### Version Updates
 
 Regular updates needed:
+
 - Node.js versions in CI matrix
 - Dependencies (weekly/monthly)
 - Config packages
@@ -311,6 +320,7 @@ Regular updates needed:
 ### Breaking Changes
 
 When updating:
+
 1. Update CHANGELOG.md
 2. Document migration path
 3. Version bump (semver)

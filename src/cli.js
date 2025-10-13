@@ -6,7 +6,7 @@
  * It's not included in library builds.
  */
 
-import {main} from './index.js';
+import { main } from './index.js';
 
 // Execute main function
 main();

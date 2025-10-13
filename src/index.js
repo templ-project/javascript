@@ -6,7 +6,7 @@
  * Google JavaScript Style Guide.
  */
 
-import {Greeter, hello} from './lib/greeter.js';
+import { Greeter, hello } from './lib/greeter.js';
 
 /**
  * Main function that demonstrates the template functionality.
@@ -18,4 +18,4 @@ function main() {
   console.log(message);
 }
 
-export {Greeter, hello, main};
+export { Greeter, hello, main };
