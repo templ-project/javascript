@@ -1,3 +1,11 @@
+# Code with AI
+.cwai
+.github/prompts
+
+# Env
+.env*
+!.env.example
+
 # Logs
 logs
 *.log
@@ -145,8 +153,8 @@ dist/
 coverage/
 .nyc_output/
 
-# Add JSCPD output to gitignore
-.jscpd/
+# Add JSDoc output to gitignore
+docs/
 
-# Add Husky directory to gitignore (it will be created during npm install)
-.husky/
+# Jscpd reports
+.jscpd/html/

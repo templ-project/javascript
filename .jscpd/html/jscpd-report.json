@@ -1,0 +1,85 @@
+{
+  "statistics": {
+    "detectionDate": "2025-10-13T19:38:43.851Z",
+    "formats": {
+      "javascript": {
+        "sources": {
+          "/Users/dragosc/Workspace/gh--templ-project/javascript/src/lib/greeter.spec.js": {
+            "lines": 136,
+            "tokens": 1359,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "/Users/dragosc/Workspace/gh--templ-project/javascript/src/lib/greeter.js": {
+            "lines": 79,
+            "tokens": 210,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "/Users/dragosc/Workspace/gh--templ-project/javascript/src/index.spec.js": {
+            "lines": 39,
+            "tokens": 336,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "/Users/dragosc/Workspace/gh--templ-project/javascript/src/index.js": {
+            "lines": 31,
+            "tokens": 162,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          }
+        },
+        "total": {
+          "lines": 285,
+          "tokens": 2067,
+          "sources": 4,
+          "clones": 0,
+          "duplicatedLines": 0,
+          "duplicatedTokens": 0,
+          "percentage": 0,
+          "percentageTokens": 0,
+          "newDuplicatedLines": 0,
+          "newClones": 0
+        }
+      }
+    },
+    "total": {
+      "lines": 285,
+      "tokens": 2067,
+      "sources": 4,
+      "clones": 0,
+      "duplicatedLines": 0,
+      "duplicatedTokens": 0,
+      "percentage": 0,
+      "percentageTokens": 0,
+      "newDuplicatedLines": 0,
+      "newClones": 0
+    }
+  },
+  "duplicates": [],
+  "filename": "/Users/dragosc/Workspace/gh--templ-project/javascript/node_modules/@jscpd/html-reporter/dist/templates/main.pug"
+}

@@ -1,14 +1,16 @@
 #!/usr/bin/env node
 
 /**
- * Main entry point for the JavaScript Template project
- * Demonstrates ESM module usage and clean code practices
+ * @fileoverview Main entry point for the JavaScript Template project.
+ * Demonstrates ESM module usage and clean code practices following
+ * Google JavaScript Style Guide.
  */
 
-import {hello} from './lib/greeter.js';
+import {Greeter, hello} from './lib/greeter.js';
 
 /**
- * Main function that demonstrates the template functionality
+ * Main function that demonstrates the template functionality.
+ * Logs a greeting message to the console.
  * @returns {void}
  */
 function main() {
@@ -16,10 +18,4 @@ function main() {
   console.log(message);
 }
 
-// Run the main function if this file is executed directly
-if (import.meta.url === `file://${process.argv[1]}`) {
-  main();
-}
-
-export {hello, main};
-export default {hello, main};
+export {Greeter, hello, main};

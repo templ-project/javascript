@@ -12,11 +12,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Initial JavaScript Bootstrap Template project
 - ESM module support with Node.js 18+
 - Comprehensive testing setup with Vitest
-- Code quality tools (ESLint, Prettier, JSHint)
+- Code quality tools (ESLint, Prettier)
 - Copy/paste detection with JSCPD
 - License compliance checking
 - Git hooks with Husky and lint-staged
-- Dual build system (ESM + CommonJS) with Rollup
+- Multi-target build system (ESM, CommonJS, IIFE, Browser) with esbuild
+- Import maps example for native browser ESM support
 - TDD examples with `hello('World')` function
 - Complete documentation and API reference
 - GitHub Actions CI/CD workflow
@@ -38,9 +39,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - ESLint configuration following Google JavaScript Style Guide
 - Prettier formatting with consistent style
 - Vitest testing with coverage reporting
-- JSHint type checking for JavaScript
 - JSCPD duplicate code detection
-- Rollup bundling for distribution
+- esbuild bundling for multiple distribution formats
 - Package.json with comprehensive scripts
 
 ### Documentation

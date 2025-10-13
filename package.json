@@ -3,31 +3,62 @@
   "version": "1.0.0",
   "description": "A JavaScript Bootstrap/Template project using modern tools and best practices",
   "type": "module",
-  "main": "./src/index.js",
   "exports": {
     ".": {
-      "import": "./src/index.js",
-      "require": "./dist/index.cjs"
+      "browser": {
+        "import": "./dist/browser/index.js",
+        "default": "./dist/browser/index.js"
+      },
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.cjs",
+      "default": "./dist/esm/index.js"
     }
   },
+  "main": "./dist/cjs/index.cjs",
+  "module": "./dist/esm/index.js",
+  "unpkg": "./dist/iife/your-lib.min.js",
+  "jsdelivr": "./dist/iife/your-lib.min.js",
+  "sideEffects": false,
+  "bin": {
+    "bootstrap": ".install/bootstrap.js"
+  },
+  "files": ["dist"],
   "scripts": {
-    "start": "node src/index.js",
-    "build": "rollup -c",
-    "test": "vitest run",
-    "test:watch": "vitest",
-    "test:coverage": "vitest run --coverage",
-    "lint": "eslint --fix .",
-    "lint:check": "eslint .",
+    "build": "run-s build:*",
+    "build:browser": "esbuild src/index.js --bundle --format=esm --platform=browser --target=es2018 --outdir=dist/browser --splitting --minify --sourcemap",
+    "build:cjs": "esbuild src/index.js --bundle --format=cjs --platform=node --target=node16 --outfile=dist/cjs/index.cjs --sourcemap",
+    "build:esm": "esbuild src/index.js --bundle --format=esm --platform=neutral --target=es2020 --outdir=dist/esm --splitting --sourcemap",
+    "build:iife": "esbuild src/index.js --bundle --format=iife --platform=browser --target=es2018 --outfile=dist/iife/your-lib.min.js --global-name=YourLib --minify --sourcemap",
+    "clean": "rimraf dist coverage .nyc_output docs",
+    "docs": "jsdoc -c jsdoc.json",
+    "duplicate-check": "jscpd src/",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "type-check": "jshint src/",
-    "validate": "run-s format lint type-check duplicate-check test",
-    "prepare": "husky install",
-    "license-check": "license-checker --onlyAllow 'MIT;ISC;Apache-2.0;BSD-2-Clause;BSD-3-Clause;BlueOak-1.0.0;BSD*;Python-2.0;CC-BY-4.0;CC-BY-3.0;CC0-1.0;WTFPL OR MIT;MIT AND CC-BY-3.0'",
-    "duplicate-check": "jscpd src/",
-    "clean": "rimraf dist coverage .nyc_output"
+    "license-check": "licensee --errors-only",
+    "lint": "eslint --fix .",
+    "lint:check": "eslint .",
+    "prepare": "husky",
+    "prebuild": "run-s clean",
+    "pretest": "run-s clean build",
+    "serve": "npx --yes serve .",
+    "start": "node src/cli.js",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "test:watch": "vitest",
+    "validate": "run-s format lint duplicate-check test"
   },
-  "keywords": ["javascript", "template", "bootstrap", "node", "esm", "vitest", "eslint", "prettier"],
+  "keywords": [
+    "javascript",
+    "template",
+    "bootstrap",
+    "node",
+    "esm",
+    "import-maps",
+    "browser",
+    "vitest",
+    "eslint",
+    "prettier"
+  ],
   "author": "Templ Project",
   "license": "MIT",
   "repository": {
@@ -39,24 +70,25 @@
   },
   "homepage": "https://github.com/templ-project/javascript#readme",
   "engines": {
-    "node": ">=18.0.0",
-    "npm": ">=8.0.0"
+    "node": ">=20.0.0",
+    "npm": ">=10.0.0"
   },
   "prettier": "@templ-project/prettier",
   "devDependencies": {
-    "@templ-project/eslint": "^1.0.4",
-    "@templ-project/prettier": "^1.0.3",
-    "@templ-project/vitest": "^0.1.3",
-    "@vitest/coverage-v8": "^2.0.0",
-    "husky": "^9.0.0",
-    "jscpd": "^4.0.0",
-    "jshint": "^2.13.0",
-    "license-checker": "^25.0.0",
-    "lint-staged": "^15.0.0",
+    "@jscpd/badge-reporter": "^4.0.1",
+    "@templ-project/eslint": "^1.2.2",
+    "@templ-project/prettier": "^1.0.5",
+    "@templ-project/vitest": "^0.3.2",
+    "@vitest/coverage-v8": "^3.2.4",
+    "docdash": "^2.0.2",
+    "esbuild": "^0.25.10",
+    "husky": "^9.1.7",
+    "jscpd": "^4.0.5",
+    "jsdoc": "^4.0.4",
+    "licensee": "^10.0.0",
+    "lint-staged": "^16.2.4",
     "npm-run-all2": "^8.0.4",
-    "rimraf": "^6.0.0",
-    "rollup": "^4.0.0",
-    "vitest": "^2.0.0"
+    "rimraf": "^6.0.1"
   },
   "lint-staged": {
     "*.{js,mjs,cjs}": ["eslint --fix", "prettier --write"],

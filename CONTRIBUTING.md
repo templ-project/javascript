@@ -38,6 +38,13 @@ npm run prepare
 
 # Run tests to ensure everything works
 npm test
+
+# Build the project
+npm run build
+
+# Try the browser example (optional)
+npm run serve
+# Then open http://localhost:3000/example.html
 ```
 
 ## Code Style
@@ -55,11 +62,6 @@ We use several tools to maintain code quality:
 - Consistent code formatting
 - Run: `npm run format`
 - Check: `npm run format:check`
-
-### JSHint
-
-- Type checking for JavaScript
-- Run: `npm run type-check`
 
 ### Testing
 
