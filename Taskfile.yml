@@ -1,0 +1,235 @@
+version: "3"
+
+vars:
+  __TF_HEADER_LINE: "=============================================================="
+
+tasks:
+  # ==========================================================================
+  # Build Tasks
+  # ==========================================================================
+
+  print:env:
+    desc: "Print current build environment variables"
+    cmds:
+      - cmd: env
+        platforms: [darwin, linux]
+      - cmd: powershell -Command "Get-ChildItem Env:"
+        platforms: [windows]
+
+  build:
+    desc: "Build project (system: {{.CPP_BUILD_SYSTEM}}, type: {{.CPP_BUILD_TYPE}})"
+    cmds:
+      - task: print:env
+      - cmd: npm run build
+
+  # ============================================================================
+  # Clean Tasks
+  # ============================================================================
+
+  clean:
+    desc: "Clean all build artifacts"
+    cmds:
+      - cmd: npm run clean
+
+  # ============================================================================
+  # Code Quality Tasks
+  # ============================================================================
+
+  format:
+    desc: "Format code and fix issues"
+    cmds:
+      - task: format:prettier
+      - cmd: echo "✅ Code format completed"
+
+  format:prettier:
+    cmds:
+      - npm run format
+    desc: "Format code using Prettier"
+    silent: true
+
+  format:check:
+    desc: "Check code formatting without fixing"
+    cmds:
+      - task: format:check:prettier
+      - cmd: echo "✅ Code format check completed"
+
+  format:check:prettier:
+    cmds:
+      - npm run format:check
+    desc: "Check code formatting using Prettier"
+    silent: true
+
+  lint:
+    desc: "Run linter and fix issues"
+    cmds:
+      - task: lint:eslint
+      - task: lint:powershell
+      - task: lint:shellcheck
+      - cmd: echo "✅ Linting completed"
+
+  lint:eslint:
+    cmds:
+      - npm run lint
+      - echo "- ✅ eslint lint completed"
+    desc: "Lint code using ESLint"
+    silent: true
+
+  lint:powershell:
+    aliases: [lint:pwsh]
+    cmds:
+      - pwsh -File .scripts/lint-powershell.ps1 -Fix {{if .STAGED}}-Staged{{end}}
+    desc: "Lint PowerShell scripts using PSScriptAnalyzer"
+    silent: true
+
+  lint:shellcheck:
+    aliases: [lint:sh, lint:bash]
+    cmds:
+      - bash .scripts/lint-shellcheck.sh --fix {{if .STAGED}}--staged{{end}}
+    desc: "Lint shell scripts using ShellCheck"
+    silent: true
+
+  lint:check:
+    desc: "Run linter without fixing"
+    cmds:
+      - task: lint:check:eslint
+      - task: lint:check:powershell
+      - task: lint:check:shellcheck
+      - cmd: echo "✅ Linting check completed"
+
+  lint:check:eslint:
+    cmds:
+      - npm run lint:check
+      - echo "- ✅ eslint lint check completed"
+    desc: "Check code using ESLint"
+    silent: true
+
+  lint:check:powershell:
+    aliases: [lint:check:pwsh]
+    cmds:
+      - pwsh -File .scripts/lint-powershell.ps1 {{if .STAGED}}-Staged{{end}}
+    desc: "Check PowerShell scripts using PSScriptAnalyzer"
+    silent: true
+
+  lint:check:shellcheck:
+    aliases: [lint:check:sh, lint:check:bash]
+    cmds:
+      - bash .scripts/lint-shellcheck.sh {{if .STAGED}}--staged{{end}}
+    desc: "Check shell scripts using ShellCheck"
+    silent: true
+
+  duplicate-check:
+    cmds:
+      - npx -y jscpd src/
+      - git add .jscpd/jscpd-badge.svg 2>/dev/null || true
+    desc: "Check for duplicate code using jscpd"
+
+  # ============================================================================
+  # Test Tasks
+  # ============================================================================
+
+  test:
+    desc: "Run tests (system: {{.CPP_BUILD_SYSTEM}})"
+    cmds:
+      - cmd: npm run test
+
+  test:coverage:
+    cmds:
+      - cmd: npm run test:coverage
+    desc: "Generate test coverage report"
+    silent: true
+
+  # ============================================================================
+  # Development Tools
+  # ============================================================================
+
+  run:
+    desc: "Run application"
+    cmds:
+      - cmd: npm run start
+
+  # TODO: Implement debug task
+  # debug:
+  #   desc: "Run application with debugger (gdb on Linux/macOS)"
+  #   cmds:
+  #     - task: Build
+  #     - cmd: echo "Running (Debug mode)... "
+
+  # ============================================================================
+  # Documentation Tasks
+  # ============================================================================
+
+  docs:
+    desc: "Build documentation"
+    cmds:
+      - npm install
+      - cmd: |
+          $env:PATH = "$env:PATH;$(Get-Location)\node_modules\.bin"
+          uv run mkdocs build
+        platforms: [windows]
+      - cmd: |
+          export PATH="$PATH:$(pwd)/node_modules/.bin"
+          uv run mkdocs build
+        platforms: [darwin, linux]
+
+  docs:serve:
+    desc: "Serve documentation locally with live reload"
+    cmds:
+      - |
+        echo "📚 Starting documentation server..."
+        echo "📖 Open http://127.0.0.1:8000 in your browser"
+        export PATH="$PATH:$(pwd)/node_modules/.bin"
+        env
+        uv run mkdocs serve
+
+  docs:deploy:
+    desc: "Deploy documentation to GitHub Pages"
+    cmds:
+      - cmd: |
+          $env:PATH = "$env:PATH;$(Get-Location)\node_modules\.bin"
+          uv run mkdocs gh-deploy --force
+        platforms: [windows]
+      - cmd: |
+          export PATH="$PATH:$(pwd)/node_modules/.bin"
+          uv run mkdocs gh-deploy --force
+        platforms: [darwin, linux]
+
+  # ============================================================================
+  # Validation Tasks
+  # ============================================================================
+
+  validate:
+    cmds:
+      - task: format
+      - task: clean
+      - task: build
+      - task: lint
+      - task: run
+      - task: clean
+      - task: test
+      - cmd: |
+          echo ""
+          echo "{{.__TF_HEADER_LINE}}"
+          echo "✅ Validation successful"
+          echo "{{.__TF_HEADER_LINE}}"
+          echo ""
+    desc: "Run CI pipeline for specific build system and compiler"
+    silent: true
+  # ============================================================================
+  # Python/UV Package Management Tasks
+  # ============================================================================
+
+  uv:refresh:
+    desc: "Refresh all Python packages (update dependencies)"
+    cmds:
+      - |
+        echo "🔄 Refreshing Python packages..."
+        uv sync --upgrade
+        echo "✓ Packages refreshed"
+
+  uv:sync:
+    desc: "Install Python dependencies"
+    cmds:
+      - |
+        echo "📦 Installing Python dependencies..."
+        uv sync
+        echo "✓ Python environment ready"
