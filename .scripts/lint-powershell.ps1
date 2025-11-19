@@ -55,12 +55,12 @@ $IGNORED_FOLDERS = @(
 
 # Show help
 if ($Help) {
-  Write-Host "Usage: lint-powershell.ps1 [-Fix] [-Staged]"
-  Write-Host ""
-  Write-Host "Options:"
-  Write-Host "  -Fix     Apply fixes automatically"
-  Write-Host "  -Staged  Only lint staged git files"
-  Write-Host "  -Help    Show this help message"
+  Write-Output "Usage: lint-powershell.ps1 [-Fix] [-Staged]"
+  Write-Output ""
+  Write-Output "Options:"
+  Write-Output "  -Fix     Apply fixes automatically"
+  Write-Output "  -Staged  Only lint staged git files"
+  Write-Output "  -Help    Show this help message"
   exit 0
 }
 
@@ -72,13 +72,13 @@ function Test-PSScriptAnalyzerInstalled {
 
 # Install PSScriptAnalyzer if missing
 function Install-PSScriptAnalyzerModule {
-  Write-Host "$([Colors]::Yellow)Installing PSScriptAnalyzer...$([Colors]::Reset)"
+  Write-Output "$([Colors]::Yellow)Installing PSScriptAnalyzer...$([Colors]::Reset)"
   try {
     Install-Module -Name PSScriptAnalyzer -Force -Scope CurrentUser -SkipPublisherCheck -ErrorAction Stop
-    Write-Host "$([Colors]::Green)✓ PSScriptAnalyzer installed successfully$([Colors]::Reset)"
+    Write-Output "$([Colors]::Green)✓ PSScriptAnalyzer installed successfully$([Colors]::Reset)"
   }
   catch {
-    Write-Host "$([Colors]::Red)✗ Failed to install PSScriptAnalyzer: $_$([Colors]::Reset)"
+    Write-Output "$([Colors]::Red)✗ Failed to install PSScriptAnalyzer: $_$([Colors]::Reset)"
     exit 2
   }
 }
@@ -156,12 +156,12 @@ function Invoke-LintPowerShell {
   $scripts = Get-PowerShellScript
 
   if (-not $scripts -or $scripts.Count -eq 0) {
-    Write-Host "$([Colors]::Yellow)No PowerShell scripts found to lint$([Colors]::Reset)"
+    Write-Output "$([Colors]::Yellow)No PowerShell scripts found to lint$([Colors]::Reset)"
     exit 0
   }
 
-  Write-Host "PSScriptAnalyzer: Linting PowerShell scripts..."
-  Write-Host ""
+  Write-Output "PSScriptAnalyzer: Linting PowerShell scripts..."
+  Write-Output ""
 
   $hasIssues = $false
   $fileCount = 0
@@ -183,11 +183,11 @@ function Invoke-LintPowerShell {
         $fixes = Invoke-ScriptAnalyzer @params -ErrorAction SilentlyContinue
 
         if ($fixes) {
-          Write-Host "$([Colors]::White)  Fixed: $($script.Name)$([Colors]::Reset)"
+          Write-Output "$([Colors]::White)  Fixed: $($script.Name)$([Colors]::Reset)"
         }
       }
       catch {
-        Write-Host "$([Colors]::Yellow)  Warning: Could not apply fixes to $($script.Name)$([Colors]::Reset)"
+        Write-Output "$([Colors]::Yellow)  Warning: Could not apply fixes to $($script.Name)$([Colors]::Reset)"
       }
 
       # Check for remaining issues
@@ -196,11 +196,11 @@ function Invoke-LintPowerShell {
 
       if ($issues) {
         $hasIssues = $true
-        Write-Host "$([Colors]::White)$($script.Name)$([Colors]::Reset)"
-        $issues | Format-Table -Property Line, Severity, RuleName, Message -AutoSize | Out-String | Write-Host
+        Write-Output "$([Colors]::White)$($script.Name)$([Colors]::Reset)"
+        $issues | Format-Table -Property Line, Severity, RuleName, Message -AutoSize | Out-String | Write-Output
       }
       else {
-        Write-Host "$([Colors]::Gray)  OK: $($script.Name)$([Colors]::Reset)"
+        Write-Output "$([Colors]::Gray)  OK: $($script.Name)$([Colors]::Reset)"
       }
     }
     else {
@@ -216,34 +216,34 @@ function Invoke-LintPowerShell {
 
       if ($issues) {
         $hasIssues = $true
-        Write-Host "$([Colors]::White)$($script.Name)$([Colors]::Reset)"
-        $issues | Format-Table -Property Line, Severity, RuleName, Message -AutoSize | Out-String | Write-Host
-        Write-Host ""
+        Write-Output "$([Colors]::White)$($script.Name)$([Colors]::Reset)"
+        $issues | Format-Table -Property Line, Severity, RuleName, Message -AutoSize | Out-String | Write-Output
+        Write-Output ""
       }
       else {
-        Write-Host "$([Colors]::Gray)  OK: $($script.Name)$([Colors]::Reset)"
+        Write-Output "$([Colors]::Gray)  OK: $($script.Name)$([Colors]::Reset)"
       }
     }
   }
 
-  Write-Host ""
-  Write-Host "Checked $fileCount PowerShell script(s)"
+  Write-Output ""
+  Write-Output "Checked $fileCount PowerShell script(s)"
 
   if ($hasIssues) {
     if ($Fix) {
-      Write-Host ""
-      Write-Host "$([Colors]::Yellow)⚠ Some issues could not be auto-fixed$([Colors]::Reset)"
-      Write-Host "Please review and fix them manually"
+      Write-Output ""
+      Write-Output "$([Colors]::Yellow)⚠ Some issues could not be auto-fixed$([Colors]::Reset)"
+      Write-Output "Please review and fix them manually"
       exit 1
     }
     else {
-      Write-Host "$([Colors]::Red)✗ PSScriptAnalyzer found issues$([Colors]::Reset)"
-      Write-Host "Run with -Fix to apply automatic fixes: .\lint-powershell.ps1 -Fix"
+      Write-Output "$([Colors]::Red)✗ PSScriptAnalyzer found issues$([Colors]::Reset)"
+      Write-Output "Run with -Fix to apply automatic fixes: .\lint-powershell.ps1 -Fix"
       exit 1
     }
   }
   else {
-    Write-Host "$([Colors]::Green)✓ All PowerShell scripts are clean$([Colors]::Reset)"
+    Write-Output "$([Colors]::Green)✓ All PowerShell scripts are clean$([Colors]::Reset)"
     exit 0
   }
 }

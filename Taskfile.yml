@@ -123,11 +123,21 @@ tasks:
     desc: 'Check shell scripts using ShellCheck'
     silent: true
 
+  audit-check:
+    desc: 'Check for vulnerabilities in dependencies'
+    cmds:
+      - cmd: npm audit --audit-level=moderate
+
   duplicate-check:
     cmds:
       - npx -y jscpd src/
       - git add .jscpd/jscpd-badge.svg 2>/dev/null || true
     desc: 'Check for duplicate code using jscpd'
+
+  license-check:
+    desc: 'Check project license compliance'
+    cmds:
+      - cmd: npm run license-check
 
   # ============================================================================
   # Test Tasks
@@ -167,9 +177,8 @@ tasks:
   docs:
     desc: 'Build documentation'
     cmds:
-      - npm install
       - cmd: |
-          $env:PATH = "$env:PATH;$(Get-Location)\node_modules\.bin"
+          $env:PATH = "$env:PATH;$(Get-Location)/node_modules/.bin"
           uv run mkdocs build
         platforms: [windows]
       - cmd: |

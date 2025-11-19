@@ -9,10 +9,10 @@
 .jscpd.json
 .prettierignore
 .shellcheckrc
-node_modules/
 coverage/
 dist/
 docs-html/
+node_modules/
 LICENSE
 *.lock
 *.log
