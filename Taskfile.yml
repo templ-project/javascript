@@ -264,22 +264,63 @@ tasks:
           echo ""
     desc: 'Run CI pipeline for specific build system and compiler'
     silent: true
+
   # ============================================================================
-  # Python/UV Package Management Tasks
+  # Dependencies
   # ============================================================================
 
-  uv:refresh:
-    desc: 'Refresh all Python packages (update dependencies)'
+  # TODO: Not sure whether to fully include Mise yet within the Taskfile and treat mise as a dependency of task and not the other way around
+
+  deps:sync:
+    desc: 'Install all project dependencies'
+    deps:
+      # - deps:sync:mise
+      - deps:sync:npm
+      - deps:sync:uv
+
+  # deps:sync:mise:
+  #   desc: "Install Mise dependencies"
+  #   cmds:
+  #     - |
+  #       echo "📦 Installing Mise dependencies..."
+  #       mise trust && mise install
+  #       echo "✓ Mise environment ready"
+
+  deps:sync:npm:
+    desc: 'Install NodeJs dependencies'
     cmds:
       - |
-        echo "🔄 Refreshing Python packages..."
-        uv sync --upgrade
-        echo "✓ Packages refreshed"
+        echo "📦 Installing NodeJs dependencies..."
+        npm install
+        echo "✓ NodeJs environment ready"
 
-  uv:sync:
+  deps:sync:uv:
     desc: 'Install Python dependencies'
     cmds:
       - |
         echo "📦 Installing Python dependencies..."
         uv sync
         echo "✓ Python environment ready"
+
+  deps:refresh:
+    desc: 'Install all project dependencies'
+    deps:
+      # - deps:refresh:mise
+      - deps:refresh:npm
+      - deps:refresh:uv
+
+  deps:refresh:npm:
+    desc: 'Refresh all NodeJs packages (update dependencies)'
+    cmds:
+      - |
+        echo "🔄 Refreshing NodeJs packages..."
+        npm outdated && npm update && npm audit fix
+        echo "✓ Packages refreshed"
+
+  deps:refresh:uv:
+    desc: 'Refresh all Python packages (update dependencies)'
+    cmds:
+      - |
+        echo "🔄 Refreshing Python packages..."
+        uv sync --upgrade
+        echo "✓ Packages refreshed"
