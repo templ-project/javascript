@@ -51,6 +51,11 @@ $IGNORED_FOLDERS = @(
   'build'
 )
 
+# Files to exclude from linting
+$IGNORED_FILES = @(
+  'install-psscriptanalyzer.ps1'
+)
+
 # ============================================================================
 
 # Show help
@@ -117,8 +122,8 @@ function Get-PowerShellScript {
             continue
           }
 
-          # If it's a .ps1 file, add it
-          if (-not $item.PSIsContainer -and $item.Extension -eq '.ps1') {
+          # If it's a .ps1 file, add it (unless it's in the ignored files list)
+          if (-not $item.PSIsContainer -and $item.Extension -eq '.ps1' -and $IGNORED_FILES -notcontains $item.Name) {
             [void]$resultList.Add($item)
           }
 
