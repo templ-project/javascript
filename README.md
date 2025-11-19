@@ -107,15 +107,19 @@ CI runs additional checks:
 
 ```javascript
 // ES Modules
-import { hello, Greeter } from '@templ-project/javascript-template';
+import { hello, Greeter } from "@templ-project/javascript-template";
+```
 
+```javascript
 // CommonJS
-const { hello } = require('@templ-project/javascript-template');
+const { hello } = require("@templ-project/javascript-template");
+```
 
+```html
 // Browser (after npm run build)
 <script src="./dist/iife/your-lib.min.js"></script>
 <script>
-  console.log(YourLib.hello('World'));
+  console.log(YourLib.hello("World"));
 </script>
 ```
 

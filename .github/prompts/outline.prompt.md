@@ -78,7 +78,7 @@ If any step fails, emit only an error line: `ERROR: <error_code>` and no partial
 ```json
 {
   "branch": "<BRANCH_NAME>",
-  "documents": [{"file": "<FEATURE_FOLDER>/<file>.md", "type": "<DOCUMENT_TYPE>", "taskType": "<TASK_TYPE>"}],
+  "documents": [{ "file": "<FEATURE_FOLDER>/<file>.md", "type": "<DOCUMENT_TYPE>", "taskType": "<TASK_TYPE>" }],
   "ready": true,
   "next_action_hint": "review_and_create_pr"
 }

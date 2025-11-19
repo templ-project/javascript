@@ -12,6 +12,9 @@ dist
 # Node
 node_modules/
 
+# Jscpd
+.jscpd/html/
+
 # Python/Uv
 __pycache__/
 .venv/

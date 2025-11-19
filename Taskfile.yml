@@ -1,7 +1,7 @@
-version: "3"
+version: '3'
 
 vars:
-  __TF_HEADER_LINE: "=============================================================="
+  __TF_HEADER_LINE: '=============================================================='
 
 tasks:
   # ==========================================================================
@@ -9,7 +9,7 @@ tasks:
   # ==========================================================================
 
   print:env:
-    desc: "Print current build environment variables"
+    desc: 'Print current build environment variables'
     cmds:
       - cmd: env
         platforms: [darwin, linux]
@@ -17,7 +17,7 @@ tasks:
         platforms: [windows]
 
   build:
-    desc: "Build project (system: {{.CPP_BUILD_SYSTEM}}, type: {{.CPP_BUILD_TYPE}})"
+    desc: 'Build project (system: {{.CPP_BUILD_SYSTEM}}, type: {{.CPP_BUILD_TYPE}})'
     cmds:
       - task: print:env
       - cmd: npm run build
@@ -27,7 +27,7 @@ tasks:
   # ============================================================================
 
   clean:
-    desc: "Clean all build artifacts"
+    desc: 'Clean all build artifacts'
     cmds:
       - cmd: npm run clean
 
@@ -36,7 +36,7 @@ tasks:
   # ============================================================================
 
   format:
-    desc: "Format code and fix issues"
+    desc: 'Format code and fix issues'
     cmds:
       - task: format:prettier
       - cmd: echo "✅ Code format completed"
@@ -44,11 +44,11 @@ tasks:
   format:prettier:
     cmds:
       - npm run format
-    desc: "Format code using Prettier"
+    desc: 'Format code using Prettier'
     silent: true
 
   format:check:
-    desc: "Check code formatting without fixing"
+    desc: 'Check code formatting without fixing'
     cmds:
       - task: format:check:prettier
       - cmd: echo "✅ Code format check completed"
@@ -56,11 +56,11 @@ tasks:
   format:check:prettier:
     cmds:
       - npm run format:check
-    desc: "Check code formatting using Prettier"
+    desc: 'Check code formatting using Prettier'
     silent: true
 
   lint:
-    desc: "Run linter and fix issues"
+    desc: 'Run linter and fix issues'
     cmds:
       - task: lint:eslint
       - task: lint:powershell
@@ -71,25 +71,28 @@ tasks:
     cmds:
       - npm run lint
       - echo "- ✅ eslint lint completed"
-    desc: "Lint code using ESLint"
+    desc: 'Lint code using ESLint'
     silent: true
 
   lint:powershell:
     aliases: [lint:pwsh]
     cmds:
       - pwsh -File .scripts/lint-powershell.ps1 -Fix {{if .STAGED}}-Staged{{end}}
-    desc: "Lint PowerShell scripts using PSScriptAnalyzer"
+    desc: 'Lint PowerShell scripts using PSScriptAnalyzer'
     silent: true
 
   lint:shellcheck:
     aliases: [lint:sh, lint:bash]
     cmds:
-      - bash .scripts/lint-shellcheck.sh --fix {{if .STAGED}}--staged{{end}}
-    desc: "Lint shell scripts using ShellCheck"
+      - cmd: bash .scripts/lint-shellcheck.sh --fix {{if .STAGED}}--staged{{end}}
+        platforms: [darwin, linux]
+      - cmd: pwsh -NoProfile -Command "if (Get-Command shellcheck -ErrorAction SilentlyContinue) { bash .scripts/lint-shellcheck.sh --fix {{if .STAGED}}--staged{{end}} } else { Write-Host '⚠️  ShellCheck not installed, skipping shell script linting' }"
+        platforms: [windows]
+    desc: 'Lint shell scripts using ShellCheck'
     silent: true
 
   lint:check:
-    desc: "Run linter without fixing"
+    desc: 'Run linter without fixing'
     cmds:
       - task: lint:check:eslint
       - task: lint:check:powershell
@@ -100,42 +103,45 @@ tasks:
     cmds:
       - npm run lint:check
       - echo "- ✅ eslint lint check completed"
-    desc: "Check code using ESLint"
+    desc: 'Check code using ESLint'
     silent: true
 
   lint:check:powershell:
     aliases: [lint:check:pwsh]
     cmds:
       - pwsh -File .scripts/lint-powershell.ps1 {{if .STAGED}}-Staged{{end}}
-    desc: "Check PowerShell scripts using PSScriptAnalyzer"
+    desc: 'Check PowerShell scripts using PSScriptAnalyzer'
     silent: true
 
   lint:check:shellcheck:
     aliases: [lint:check:sh, lint:check:bash]
     cmds:
-      - bash .scripts/lint-shellcheck.sh {{if .STAGED}}--staged{{end}}
-    desc: "Check shell scripts using ShellCheck"
+      - cmd: bash .scripts/lint-shellcheck.sh {{if .STAGED}}--staged{{end}}
+        platforms: [darwin, linux]
+      - cmd: pwsh -NoProfile -Command "if (Get-Command shellcheck -ErrorAction SilentlyContinue) { bash .scripts/lint-shellcheck.sh {{if .STAGED}}--staged{{end}} } else { Write-Host '⚠️  ShellCheck not installed, skipping shell script linting' }"
+        platforms: [windows]
+    desc: 'Check shell scripts using ShellCheck'
     silent: true
 
   duplicate-check:
     cmds:
       - npx -y jscpd src/
       - git add .jscpd/jscpd-badge.svg 2>/dev/null || true
-    desc: "Check for duplicate code using jscpd"
+    desc: 'Check for duplicate code using jscpd'
 
   # ============================================================================
   # Test Tasks
   # ============================================================================
 
   test:
-    desc: "Run tests (system: {{.CPP_BUILD_SYSTEM}})"
+    desc: 'Run tests (system: {{.CPP_BUILD_SYSTEM}})'
     cmds:
       - cmd: npm run test
 
   test:coverage:
     cmds:
       - cmd: npm run test:coverage
-    desc: "Generate test coverage report"
+    desc: 'Generate test coverage report'
     silent: true
 
   # ============================================================================
@@ -143,7 +149,7 @@ tasks:
   # ============================================================================
 
   run:
-    desc: "Run application"
+    desc: 'Run application'
     cmds:
       - cmd: npm run start
 
@@ -159,7 +165,7 @@ tasks:
   # ============================================================================
 
   docs:
-    desc: "Build documentation"
+    desc: 'Build documentation'
     cmds:
       - npm install
       - cmd: |
@@ -172,7 +178,7 @@ tasks:
         platforms: [darwin, linux]
 
   docs:serve:
-    desc: "Serve documentation locally with live reload"
+    desc: 'Serve documentation locally with live reload'
     cmds:
       - |
         echo "📚 Starting documentation server..."
@@ -182,7 +188,7 @@ tasks:
         uv run mkdocs serve
 
   docs:deploy:
-    desc: "Deploy documentation to GitHub Pages"
+    desc: 'Deploy documentation to GitHub Pages'
     cmds:
       - cmd: |
           $env:PATH = "$env:PATH;$(Get-Location)\node_modules\.bin"
@@ -206,20 +212,21 @@ tasks:
       - task: run
       - task: clean
       - task: test
+      - task: docs
       - cmd: |
           echo ""
           echo "{{.__TF_HEADER_LINE}}"
           echo "✅ Validation successful"
           echo "{{.__TF_HEADER_LINE}}"
           echo ""
-    desc: "Run CI pipeline for specific build system and compiler"
+    desc: 'Run CI pipeline for specific build system and compiler'
     silent: true
   # ============================================================================
   # Python/UV Package Management Tasks
   # ============================================================================
 
   uv:refresh:
-    desc: "Refresh all Python packages (update dependencies)"
+    desc: 'Refresh all Python packages (update dependencies)'
     cmds:
       - |
         echo "🔄 Refreshing Python packages..."
@@ -227,7 +234,7 @@ tasks:
         echo "✓ Packages refreshed"
 
   uv:sync:
-    desc: "Install Python dependencies"
+    desc: 'Install Python dependencies'
     cmds:
       - |
         echo "📦 Installing Python dependencies..."

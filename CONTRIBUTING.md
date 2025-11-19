@@ -159,8 +159,8 @@ function myFunction(name) {
 ### Test Structure
 
 ```javascript
-import {describe, it, expect} from "vitest";
-import {myFunction} from "../lib/my-module.js";
+import { describe, it, expect } from "vitest";
+import { myFunction } from "../lib/my-module.js";
 
 describe("my-module", () => {
   describe("myFunction", () => {
