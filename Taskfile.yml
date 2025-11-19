@@ -5,6 +5,36 @@ vars:
 
 tasks:
   # ==========================================================================
+  # Environment Setup
+  # ==========================================================================
+
+  ensure:bash:
+    desc: 'Exclude PowerShell scripts from task execution on non-Windows platforms'
+    cmds:
+      - cmd: |
+          bash_path=$(pwsh -Command '(Get-Item (Get-Command bash).Path).FullName | Select-String system32 | Select-String windows' 2>/dev/null)
+          if [ -n "$bash_path" ]; then
+            echo "⚠️  Windows System32 bash detected - not supported due to path inconsistencies"
+            echo "ℹ️  On 🪟 Windows, please, use 🌿 Git Bash or 🐧 WSL instead"
+            exit 1
+          fi
+          bash_path=$(pwsh -Command '(Get-Command bash).Path' 2>/dev/null)
+          if [ -z "$bash_path" ]; then
+            echo "⚠️  bash not found"
+            echo "ℹ️  On 🪟 Windows, please, use 🌿 Git Bash or 🐧 WSL instead"
+            exit 1
+          fi
+        platforms: [windows]
+      - cmd: |
+          if ! command -v bash >/dev/null 2>&1; then
+            echo "⚠️  bash not found"
+            echo "ℹ️  Please install bash to proceed"
+            exit 1
+          fi
+        platforms: [linux, darwin]
+    silent: true
+
+  # ==========================================================================
   # Build Tasks
   # ==========================================================================
 
@@ -89,6 +119,8 @@ tasks:
       - cmd: pwsh -NoProfile -Command "if (Get-Command shellcheck -ErrorAction SilentlyContinue) { bash .scripts/lint-shellcheck.sh --fix {{if .STAGED}}--staged{{end}} } else { Write-Host '⚠️  ShellCheck not installed, skipping shell script linting' }"
         platforms: [windows]
     desc: 'Lint shell scripts using ShellCheck'
+    deps:
+      - task: ensure:bash
     silent: true
 
   lint:check:
@@ -118,9 +150,11 @@ tasks:
     cmds:
       - cmd: bash .scripts/lint-shellcheck.sh {{if .STAGED}}--staged{{end}}
         platforms: [darwin, linux]
-      - cmd: pwsh -NoProfile -Command "if (Get-Command shellcheck -ErrorAction SilentlyContinue) { bash .scripts/lint-shellcheck.sh {{if .STAGED}}--staged{{end}} } else { Write-Host '⚠️  ShellCheck not installed, skipping shell script linting' }"
+      - cmd: bash .scripts/lint-shellcheck.sh {{if .STAGED}}--staged{{end}}
         platforms: [windows]
     desc: 'Check shell scripts using ShellCheck'
+    deps:
+      - task: ensure:bash
     silent: true
 
   audit-check:
