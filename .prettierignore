@@ -1,20 +1,16 @@
 # Ignore files that don't need formatting
-.eslintignore
 .editorconfig
-.gitattributes
-.gitignore
+.eslintignore
 .github/
+.gitignore
 .husky/
 .jscpd/
-.jscpd.json
 .prettierignore
-.shellcheckrc
-coverage/
-dist/
-docs-html/
-node_modules/
-LICENSE
 *.lock
 *.log
 *.ps1
 *.sh
+coverage/
+dist/
+docs-html/
+LICENSE

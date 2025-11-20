@@ -38,7 +38,7 @@ windows-x64 = { asset_pattern = "PowerShell-*-win-x64.zip" }
 # Node.js for jscpd & eslint
 #
 [tools.node]
-version = "24"
+version = "22"
 # Python and package manager
 #
 [tools.python]
