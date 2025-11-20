@@ -51,21 +51,16 @@ $IGNORED_FOLDERS = @(
   'build'
 )
 
-# Files to exclude from linting
-$IGNORED_FILES = @(
-  'install-psscriptanalyzer.ps1'
-)
-
 # ============================================================================
 
 # Show help
 if ($Help) {
-  Write-Output "Usage: lint-powershell.ps1 [-Fix] [-Staged]"
-  Write-Output ""
-  Write-Output "Options:"
-  Write-Output "  -Fix     Apply fixes automatically"
-  Write-Output "  -Staged  Only lint staged git files"
-  Write-Output "  -Help    Show this help message"
+  Write-Information "Usage: lint-powershell.ps1 [-Fix] [-Staged]" -InformationAction Continue
+  Write-Information "" -InformationAction Continue
+  Write-Information "Options:" -InformationAction Continue
+  Write-Information "  -Fix     Apply fixes automatically" -InformationAction Continue
+  Write-Information "  -Staged  Only lint staged git files" -InformationAction Continue
+  Write-Information "  -Help    Show this help message" -InformationAction Continue
   exit 0
 }
 
@@ -77,13 +72,13 @@ function Test-PSScriptAnalyzerInstalled {
 
 # Install PSScriptAnalyzer if missing
 function Install-PSScriptAnalyzerModule {
-  Write-Output "$([Colors]::Yellow)Installing PSScriptAnalyzer...$([Colors]::Reset)"
+  Write-Information "$([Colors]::Yellow)Installing PSScriptAnalyzer...$([Colors]::Reset)" -InformationAction Continue
   try {
     Install-Module -Name PSScriptAnalyzer -Force -Scope CurrentUser -SkipPublisherCheck -ErrorAction Stop
-    Write-Output "$([Colors]::Green)✓ PSScriptAnalyzer installed successfully$([Colors]::Reset)"
+    Write-Information "$([Colors]::Green)✓ PSScriptAnalyzer installed successfully$([Colors]::Reset)" -InformationAction Continue
   }
   catch {
-    Write-Output "$([Colors]::Red)✗ Failed to install PSScriptAnalyzer: $_$([Colors]::Reset)"
+    Write-Error "$([Colors]::Red)✗ Failed to install PSScriptAnalyzer: $_$([Colors]::Reset)"
     exit 2
   }
 }
@@ -92,7 +87,7 @@ function Install-PSScriptAnalyzerModule {
 function Get-PowerShellScript {
   # Use current working directory as the repository root
   # The task system ensures we're running from the repo root
-  $repoRoot = Get-Location
+  $repoRoot = (Get-Location).Path
 
   if ($Staged) {
     # Get only staged .ps1 files
@@ -122,8 +117,8 @@ function Get-PowerShellScript {
             continue
           }
 
-          # If it's a .ps1 file, add it (unless it's in the ignored files list)
-          if (-not $item.PSIsContainer -and $item.Extension -eq '.ps1' -and $IGNORED_FILES -notcontains $item.Name) {
+          # If it's a .ps1 file, add it
+          if (-not $item.PSIsContainer -and $item.Extension -eq '.ps1') {
             [void]$resultList.Add($item)
           }
 
@@ -161,12 +156,12 @@ function Invoke-LintPowerShell {
   $scripts = Get-PowerShellScript
 
   if (-not $scripts -or $scripts.Count -eq 0) {
-    Write-Output "$([Colors]::Yellow)No PowerShell scripts found to lint$([Colors]::Reset)"
+    Write-Information "$([Colors]::Yellow)No PowerShell scripts found to lint$([Colors]::Reset)" -InformationAction Continue
     exit 0
   }
 
-  Write-Output "PSScriptAnalyzer: Linting PowerShell scripts..."
-  Write-Output ""
+  Write-Information "PSScriptAnalyzer: Linting PowerShell scripts..." -InformationAction Continue
+  Write-Information "" -InformationAction Continue
 
   $hasIssues = $false
   $fileCount = 0
@@ -188,11 +183,11 @@ function Invoke-LintPowerShell {
         $fixes = Invoke-ScriptAnalyzer @params -ErrorAction SilentlyContinue
 
         if ($fixes) {
-          Write-Output "$([Colors]::White)  Fixed: $($script.Name)$([Colors]::Reset)"
+          Write-Information "$([Colors]::White)  Fixed: $($script.Name)$([Colors]::Reset)" -InformationAction Continue
         }
       }
       catch {
-        Write-Output "$([Colors]::Yellow)  Warning: Could not apply fixes to $($script.Name)$([Colors]::Reset)"
+        Write-Warning "$([Colors]::Yellow)  Warning: Could not apply fixes to $($script.Name)$([Colors]::Reset)"
       }
 
       # Check for remaining issues
@@ -201,11 +196,11 @@ function Invoke-LintPowerShell {
 
       if ($issues) {
         $hasIssues = $true
-        Write-Output "$([Colors]::White)$($script.Name)$([Colors]::Reset)"
-        $issues | Format-Table -Property Line, Severity, RuleName, Message -AutoSize | Out-String | Write-Output
+        Write-Information "$([Colors]::White)$($script.Name)$([Colors]::Reset)" -InformationAction Continue
+        $issues | Format-Table -Property Line, Severity, RuleName, Message -AutoSize | Out-String | Write-Information -InformationAction Continue
       }
       else {
-        Write-Output "$([Colors]::Gray)  OK: $($script.Name)$([Colors]::Reset)"
+        Write-Information "$([Colors]::Gray)  OK: $($script.Name)$([Colors]::Reset)" -InformationAction Continue
       }
     }
     else {
@@ -221,34 +216,34 @@ function Invoke-LintPowerShell {
 
       if ($issues) {
         $hasIssues = $true
-        Write-Output "$([Colors]::White)$($script.Name)$([Colors]::Reset)"
-        $issues | Format-Table -Property Line, Severity, RuleName, Message -AutoSize | Out-String | Write-Output
-        Write-Output ""
+        Write-Information "$([Colors]::White)$($script.Name)$([Colors]::Reset)" -InformationAction Continue
+        $issues | Format-Table -Property Line, Severity, RuleName, Message -AutoSize | Out-String | Write-Information -InformationAction Continue
+        Write-Information "" -InformationAction Continue
       }
       else {
-        Write-Output "$([Colors]::Gray)  OK: $($script.Name)$([Colors]::Reset)"
+        Write-Information "$([Colors]::Gray)  OK: $($script.Name)$([Colors]::Reset)" -InformationAction Continue
       }
     }
   }
 
-  Write-Output ""
-  Write-Output "Checked $fileCount PowerShell script(s)"
+  Write-Information "" -InformationAction Continue
+  Write-Information "Checked $fileCount PowerShell script(s)" -InformationAction Continue
 
   if ($hasIssues) {
     if ($Fix) {
-      Write-Output ""
-      Write-Output "$([Colors]::Yellow)⚠ Some issues could not be auto-fixed$([Colors]::Reset)"
-      Write-Output "Please review and fix them manually"
+      Write-Information "" -InformationAction Continue
+      Write-Warning "$([Colors]::Yellow)⚠ Some issues could not be auto-fixed$([Colors]::Reset)"
+      Write-Information "Please review and fix them manually" -InformationAction Continue
       exit 1
     }
     else {
-      Write-Output "$([Colors]::Red)✗ PSScriptAnalyzer found issues$([Colors]::Reset)"
-      Write-Output "Run with -Fix to apply automatic fixes: .\lint-powershell.ps1 -Fix"
+      Write-Error "$([Colors]::Red)✗ PSScriptAnalyzer found issues$([Colors]::Reset)"
+      Write-Information "Run with -Fix to apply automatic fixes: .\lint-powershell.ps1 -Fix" -InformationAction Continue
       exit 1
     }
   }
   else {
-    Write-Output "$([Colors]::Green)✓ All PowerShell scripts are clean$([Colors]::Reset)"
+    Write-Information "$([Colors]::Green)✓ All PowerShell scripts are clean$([Colors]::Reset)" -InformationAction Continue
     exit 0
   }
 }
