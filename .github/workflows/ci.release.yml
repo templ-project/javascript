@@ -51,8 +51,6 @@ jobs:
           tar --exclude='.git' \
               --exclude='.cwai' \
               --exclude='.github/prompts' \
-              --exclude='.uvx-install' \
-              --exclude='.venv' \
               --exclude='node_modules' \
               -czf release-assets/generic-template-v${{ inputs.version }}-source.tar.gz \
               .

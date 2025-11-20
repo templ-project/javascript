@@ -15,12 +15,8 @@ node_modules/
 # Jscpd
 .jscpd/html/
 
-# Python/Uv
-__pycache__/
-.venv/
-
 # PSScriptAnalyzer
 .github/scripts/install-psscriptanalyzer.ps1
 
-# mkdocs
+# TypeDoc
 docs-html/
