@@ -22,28 +22,6 @@ updates:
         patterns:
           - '*'
 
-  # Python dependencies (pyproject.toml)
-  - package-ecosystem: 'pip'
-    directory: '/'
-    schedule:
-      interval: 'weekly'
-      day: 'monday'
-      time: '06:00'
-    open-pull-requests-limit: 3
-    assignees:
-      - 'dragoscirjan'
-    commit-message:
-      prefix: 'chore'
-      prefix-development: 'chore'
-      include: 'scope'
-    labels:
-      - 'dependencies'
-      - 'python'
-    groups:
-      python-dependencies:
-        patterns:
-          - '*'
-
   # GitHub Actions dependencies
   - package-ecosystem: 'github-actions'
     directory: '/'

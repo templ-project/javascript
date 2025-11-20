@@ -181,7 +181,7 @@ function removeMonorepoDependencies(pkg) {
  */
 function removeBootstrapArtifacts(pkg, targetPath) {
   // Remove .install directory
-  const installDir = path.join(targetPath, '.install');
+  const installDir = path.join(targetPath, '.nxp-install');
   removeIfExists(installDir);
 
   // Remove bin field if it exists

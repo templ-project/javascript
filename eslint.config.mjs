@@ -3,7 +3,6 @@ import templEslintConfig from '@templ-project/eslint';
 export default [
   {
     ignores: [
-      '.venv/**',
       'dist/**',
       'coverage/**',
       'docs-html/**',

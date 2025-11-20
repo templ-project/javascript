@@ -20,7 +20,7 @@
   "jsdelivr": "./dist/iife/your-lib.min.js",
   "sideEffects": false,
   "bin": {
-    "bootstrap": ".install/bootstrap.js"
+    "bootstrap": ".npx-install/bootstrap.js"
   },
   "files": ["dist"],
   "scripts": {
@@ -30,10 +30,9 @@
     "build:cjs": "esbuild src/index.js --bundle --format=cjs --platform=node --target=node16 --outfile=dist/cjs/index.cjs --sourcemap",
     "build:esm": "esbuild src/index.js --bundle --format=esm --platform=neutral --target=es2020 --outdir=dist/esm --splitting --sourcemap",
     "build:iife": "esbuild src/index.js --bundle --format=iife --platform=browser --target=es2018 --outfile=dist/iife/your-lib.min.js --global-name=YourLib --minify --sourcemap",
-    "clean": "rimraf dist coverage .nyc_output",
-    "docs": "mkdocs build",
-    "docs:serve": "mkdocs serve",
-    "docs:typedoc": "typedoc",
+    "clean": "rimraf dist coverage .nyc_output docs-html",
+    "docs": "typedoc",
+    "docs:serve": "npx --yes serve docs-html",
     "duplicate-check": "jscpd src/",
     "format": "npx prettier --write .",
     "format:check": "npx prettier --check .",
