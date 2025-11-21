@@ -152,6 +152,13 @@ tasks:
     desc: 'Check shell scripts using ShellCheck'
     silent: true
 
+  audit-check:
+    desc: 'Check for security vulnerabilities in dependencies'
+    cmds:
+      - |
+        {{.__TF_MISE_E}} npm audit --audit-level=moderate || true
+    silent: true
+
   duplicate-check:
     cmds:
       - |
