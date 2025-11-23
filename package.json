@@ -1,6 +1,6 @@
 {
   "name": "@templ-project/javascript-template",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A JavaScript Bootstrap/Template project using modern tools and best practices",
   "type": "module",
   "exports": {
@@ -22,7 +22,9 @@
   "bin": {
     "bootstrap": ".npx-install/bootstrap.js"
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "audit-check": "npm audit --audit-level=moderate",
     "build": "run-s build:*",
