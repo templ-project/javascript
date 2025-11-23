@@ -252,6 +252,29 @@ tasks:
   # Dependencies
   # ============================================================================
 
+  deps:clean:
+    cmds:
+      - task: deps:clean:mise
+      - task: deps:clean:npm
+    desc: 'Clean all project dependencies'
+
+  deps:clean:mise:
+    cmds:
+      - echo "🧹 Cleaning Mise dependencies..."
+      - cmd: rm -rf ~/.local/share/mise/installs
+        platforms: [darwin, linux]
+      - cmd: powershell -File 'Remove-Item -Recurse -Force $env:LOCALAPPDATA\mise\installs'
+        platforms: [windows]
+      - echo "✓ Mise environment cleaned"
+    desc: 'Clean Mise dependencies'
+
+  deps:clean:npm:
+    cmds:
+      - |
+        echo "🧹 Cleaning NodeJs dependencies..."
+        rm -rf node_modules package-lock.json
+        echo "✓ NodeJs environment cleaned"
+    desc: 'Clean NodeJs dependencies'
   deps:sync:
     cmds:
       - task: deps:sync:mise
@@ -262,6 +285,16 @@ tasks:
     cmds:
       - |
         echo "📦 Installing Mise dependencies..."
+        if [ ! -f .mise.local.lock ] && [ ! -f .mise.lock ]; then
+          echo "⚠️  .mise.local.lock not found; sync won't generate .mise.lock automatically."
+          echo "Please create a .mise.local.lock file or a .mise.lock file to proceed."
+          echo ""
+          echo "[settings]"
+          echo "experimental = true"
+          echo "lockfile = true"
+          echo ""
+          exit 1
+        fi
         mise trust && mise install --yes
         echo "✓ Mise environment ready"
     desc: 'Install Mise dependencies'
@@ -271,6 +304,7 @@ tasks:
       - |
         echo "📦 Installing NodeJs dependencies..."
         {{.__TF_MISE_E}} npm install
+        npx husky
         echo "✓ NodeJs environment ready"
     desc: 'Install NodeJs dependencies'
 
