@@ -50,7 +50,7 @@ jobs:
       tag: ${{ steps.bump.outputs.tag }}
       version: ${{ steps.bump.outputs.version }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Bump version with Bumpalicious
         id: bump

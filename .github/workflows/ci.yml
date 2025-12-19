@@ -32,7 +32,7 @@ jobs:
     name: Test Scaffold
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./.github/actions/setup-tools
       - name: Test bootstrap help
         run: mise exec -- npx --yes . bootstrap --help
