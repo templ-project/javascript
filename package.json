@@ -22,9 +22,7 @@
   "bin": {
     "bootstrap": ".npx-install/bootstrap.js"
   },
-  "files": [
-    "dist"
-  ],
+  "files": ["dist", ".npx-install"],
   "scripts": {
     "audit-check": "npm audit --audit-level=moderate",
     "build": "run-s build:*",

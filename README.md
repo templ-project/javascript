@@ -1,7 +1,7 @@
 # JavaScript Bootstrap Template
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Node.js CI](https://github.com/templ-project/javascript/workflows/Node.js%20CI/badge.svg)](https://github.com/templ-project/javascript/actions)
+[![Node.js CI](https://github.com/templ-project/javascript/actions/workflows/ci.yml/badge.svg)](https://github.com/templ-project/javascript/actions/workflows/ci.yml)
 
 > A modern JavaScript project template with ESM, testing, linting, and quality tools built-in.
 
@@ -18,15 +18,30 @@ npm test
 
 That's it! You now have a fully configured JavaScript project.
 
+### Bootstrap Options
+
+```bash
+# Bootstrap with only ESM and CJS builds (no browser builds)
+npx --yes --package=github:templ-project/javascript bootstrap --target esm,cjs ./my-project
+
+# Bootstrap as part of a monorepo (removes .husky, .github)
+npx --yes --package=github:templ-project/javascript bootstrap --part-of-monorepo ./packages/my-lib
+
+# Show all available options
+npx --yes --package=github:templ-project/javascript bootstrap --help
+```
+
+See [.npx-install/README.md](.npx-install/README.md) for detailed bootstrap documentation.
+
 ## What's Included
 
-- ✅ **ESM Modules** - Modern JavaScript with Node.js 20+
-- ✅ **Vitest** - Fast unit testing with coverage
-- ✅ **ESLint + Prettier** - Code formatting and linting
-- ✅ **Husky** - Git hooks for pre-commit validation
-- ✅ **esbuild** - Multiple build formats (ESM/CJS/IIFE/Browser)
-- ✅ **JSDoc** - API documentation generation
-- ✅ **CI/CD** - GitHub Actions workflows included
+- **ESM Modules** - Modern JavaScript with Node.js 20+
+- **Vitest** - Fast unit testing with coverage
+- **ESLint + Prettier** - Code formatting and linting
+- **Husky** - Git hooks for pre-commit validation
+- **esbuild** - Multiple build formats (ESM/CJS/IIFE/Browser)
+- **JSDoc** - API documentation generation
+- **CI/CD** - GitHub Actions workflows included
 
 ## Common Commands
 
@@ -54,9 +69,7 @@ src/
 ## Documentation
 
 - **[Contributing Guide](CONTRIBUTING.md)** - How to contribute
-- **[Usage Guide](USAGE.md)** - Detailed usage instructions
-- **[Architecture](ARCHITECTURE.md)** - Design decisions and architecture
-<!-- - **[API Documentation](docs/)** - Generated from JSDoc comments -->
+- **[Bootstrap Options](.npx-install/README.md)** - Detailed bootstrap/scaffolding options
 
 ## Requirements
 
@@ -107,12 +120,12 @@ CI runs additional checks:
 
 ```javascript
 // ES Modules
-import { hello, Greeter } from "@templ-project/javascript-template";
+import {hello, Greeter} from "@templ-project/javascript-template";
 ```
 
 ```javascript
 // CommonJS
-const { hello } = require("@templ-project/javascript-template");
+const {hello} = require("@templ-project/javascript-template");
 ```
 
 ```html
@@ -129,6 +142,6 @@ MIT © [Templ Project](https://github.com/templ-project)
 
 ## Support
 
-- 🐛 [Report Issues](https://github.com/templ-project/javascript/issues)
-- 📖 [Read the Docs](https://github.com/templ-project/javascript#readme)
-- ⭐ [Star on GitHub](https://github.com/templ-project/javascript)
+- [Report Issues](https://github.com/templ-project/javascript/issues)
+- [Read the Docs](https://github.com/templ-project/javascript#readme)
+- [Star on GitHub](https://github.com/templ-project/javascript)

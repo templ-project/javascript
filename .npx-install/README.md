@@ -87,23 +87,27 @@ npx --yes --package=github:templ-project/javascript bootstrap \
 
 The bootstrap script performs the following actions:
 
-1. **Removes Git History**
+1. **Clones the Template Repository**
+   - Clones from `https://github.com/templ-project/javascript`
+   - Uses `--depth 1` for faster cloning
+
+2. **Removes Git History**
    - Deletes `.git` directory to start fresh
 
-2. **Cleans Build Configuration** (if `--target` specified)
+3. **Cleans Build Configuration** (if `--target` specified)
    - Removes unwanted build scripts from package.json
    - Keeps only the specified build targets
 
-3. **Removes Bootstrap Artifacts**
-   - Deletes `.install` directory (this directory!)
+4. **Removes Bootstrap Artifacts**
+   - Deletes `.npx-install` directory (this directory!)
    - Removes `bin` field from package.json
 
-4. **Updates Package Metadata**
+5. **Updates Package Metadata**
    - Resets package name to `my-javascript-project`
    - Resets version to `0.1.0`
    - Clears repository, bugs, and homepage URLs
 
-5. **Monorepo Cleanup** (if `--part-of-monorepo` specified)
+6. **Monorepo Cleanup** (if `--part-of-monorepo` specified)
    - Removes `.husky` directory
    - Removes `.github` directory
    - Removes git hook dependencies
@@ -154,10 +158,10 @@ After running the bootstrap script, follow these steps:
 
 If you need to modify the bootstrap script:
 
-1. Edit `.install/bootstrap.js`
+1. Edit `.npx-install/bootstrap.js`
 2. Test locally by running:
    ```bash
-   node .install/bootstrap.js [options]
+   node .npx-install/bootstrap.js [options]
    ```
 3. Commit and push changes to the template repository
 
@@ -167,18 +171,18 @@ If you need to modify the bootstrap script:
 
 If you get "script not found" errors, ensure:
 
-1. You're using Node.js 18 or higher
+1. You're using Node.js 20 or higher
 2. The package was installed correctly
-3. The `.install/bootstrap.js` file has execute permissions
+3. The `.npx-install/bootstrap.js` file has execute permissions
 
 ### Package.json Not Found
 
-The bootstrap script expects to run in a directory that already contains the template files. Make sure you've cloned or extracted the template first.
+The bootstrap script clones the template repository first, then modifies it. If you see this error, there may be network issues preventing the clone.
 
 ### Permission Errors
 
 On Unix-like systems, ensure the bootstrap script is executable:
 
 ```bash
-chmod +x .install/bootstrap.js
+chmod +x .npx-install/bootstrap.js
 ```
