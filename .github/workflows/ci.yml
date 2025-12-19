@@ -112,6 +112,7 @@ jobs:
           fi
 
   # Release (only on main branch push after version bump)
+  # Scripts are platform-independent, so we only need one release job
   release:
     name: Create Release
     needs: [quality, version-detect]
