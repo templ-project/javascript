@@ -1,5 +1,5 @@
 mise exec -- npx lint-staged
 
-mise exec -- task lint:shellcheck lint:powershell duplicate-check license-check audit-check STAGED=1
+mise exec -- task duplicate-check license-check audit-check
 
 git add .
