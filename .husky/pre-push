@@ -1,2 +1,4 @@
-task test build
+#!/bin/sh
+
+mise exec -- task test build
 

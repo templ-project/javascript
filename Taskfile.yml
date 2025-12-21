@@ -5,6 +5,7 @@ vars:
   __TF_MISE_E: 'mise trust; mise exec --'
   __TF_MISE_E_PWSH: 'mise trust; mise exec -- pwsh -NoProfile -ExecutionPolicy Bypass -Command'
   __TF_MISE_E_PWSH_FILE: 'mise trust; mise exec -- pwsh -NoProfile -ExecutionPolicy Bypass -File'
+  __TF_MISE_E_UV_RUN: 'mise trust; mise exec -- uv run'
   # os dependent
   __TF_COMMAND_WRAPPER:
     sh: |
@@ -55,30 +56,64 @@ tasks:
         {{.__TF_MISE_E}} npm run duplicate-check
       - git add .jscpd/jscpd-badge.svg 2>/dev/null || true
 
+  eslint:
+    desc: 'Run ESLint'
+    cmds:
+      - |
+        {{.__TF_MISE_E}} npx eslint {{.CLI_ARGS}}
+    silent: true
+    sources:
+      - '**/*.{cjs,js,json,jsx,mjs,toml,yaml,yml}'
+
   format:
     desc: 'Format code and fix issues'
     cmds:
       - task: format:prettier
+      - task: format:ruff
       - cmd: echo "Code format completed"
 
   format:check:
     desc: 'Check code formatting without fixing'
     cmds:
       - task: format:check:prettier
+      - task: format:check:ruff
       - cmd: echo "Code format check completed"
 
   format:check:prettier:
     desc: 'Check code formatting using Prettier'
     cmds:
-      - |
-        {{.__TF_MISE_E}} npx prettier --check "./**/*.{json,toml,yaml,yml}"
+      - task: prettier
+        vars:
+          CLI_ARGS: '--check .'
+      - echo "- prettier format check completed"
+    silent: true
+
+  format:check:ruff:
+    aliases: [format:check:py, format:check:python]
+    desc: 'Check Python code formatting using Ruff'
+    cmds:
+      - task: ruff
+        vars:
+          CLI_ARGS: 'format --check .'
+      - echo "- ruff format check completed"
     silent: true
 
   format:prettier:
     desc: 'Format code using Prettier'
     cmds:
-      - |
-        {{.__TF_MISE_E}} npx prettier --write "./**/*.{json,toml,yaml,yml}"
+      - task: prettier
+        vars:
+          CLI_ARGS: '--write .'
+    silent: true
+
+  format:ruff:
+    aliases: [format:py, format:python]
+    desc: 'Format Python code using Ruff'
+    cmds:
+      - task: ruff
+        vars:
+          CLI_ARGS: 'format .'
+      - echo "- ruff format completed"
     silent: true
 
   license-check:
@@ -90,36 +125,144 @@ tasks:
     desc: 'Run linter and fix issues'
     cmds:
       - task: lint:eslint
+      - task: lint:pylint
+      - task: lint:pwshlint
+      - task: lint:shlint
       - cmd: echo "Linting completed"
 
   lint:check:
     desc: 'Run linter without fixing'
     cmds:
       - task: lint:check:eslint
+      - task: lint:check:pylint
+      - task: lint:check:pwshlint
+      - task: lint:check:shlint
       - cmd: echo "Linting check completed"
 
   lint:check:eslint:
     desc: 'Check code using ESLint'
     cmds:
-      - |
-        {{.__TF_MISE_E}} npx eslint "./**/*.{toml,json,yaml,yml}"
+      - task: eslint
+        vars:
+          CLI_ARGS: '.'
       - echo "- eslint lint check completed"
+    silent: true
+
+  lint:check:pylint:
+    aliases: [lint:check:py, lint:check:python]
+    desc: 'Check Python scripts using pylint'
+    cmds:
+      - task: lint:pylint
+      - echo "- pylint lint check completed"
+    silent: true
+
+  lint:check:pwshlint:
+    aliases: [lint:check:pwsh]
+    desc: 'Check PowerShell scripts using PSScriptAnalyzer'
+    cmds:
+      - task: pwshlint_py
+      - echo "- pwsh lint completed"
+    silent: true
+
+  lint:check:shlint:
+    aliases: [lint:check:bash, lint:check:sh]
+    desc: 'Check shell scripts using ShellCheck'
+    cmds:
+      - task: shlint_py
+      - echo "- bash lint completed"
     silent: true
 
   lint:eslint:
     desc: 'Lint code using ESLint'
     cmds:
-      - |
-        {{.__TF_MISE_E}} npx eslint --fix "./**/*.{json,toml,yaml,yml}"
+      - task: eslint
+        vars:
+          CLI_ARGS: '--fix .'
       - echo "- eslint lint completed"
     silent: true
 
-  lint:staged:
+  lint:pylint:
+    aliases: [lint:py, lint:python]
+    desc: 'Lint Python scripts using pylint'
+    cmds:
+      - task: pylint
+        vars:
+          CLI_ARGS: '.'
+      - echo "- pylint lint completed"
+    silent: true
+
+  lint:pwshlint:
+    aliases: [lint:pwsh]
+    desc: 'Lint PowerShell scripts using PSScriptAnalyzer'
+    cmds:
+      - task: pwshlint_py
+        vars:
+          CLI_ARGS: '--fix'
+      - echo "- pwsh lint completed"
+    silent: true
+
+  lint:shlint:
+    aliases: [lint:bash, lint:sh]
+    desc: 'Lint shell scripts using ShellCheck'
+    cmds:
+      - task: shlint_py
+        vars:
+          CLI_ARGS: '--fix'
+      - echo "- bash lint completed"
+    silent: true
+
+  lint-staged:
     desc: 'Run linter on staged files and fix issues'
     cmds:
       - |
         {{.__TF_MISE_E}} npx -y lint-staged
     silent: true
+
+  prettier:
+    cmds:
+      - |
+        {{.__TF_MISE_E}} npx prettier {{.CLI_ARGS}}
+      - echo "- prettier format completed"
+    silent: true
+    sources:
+      - '**/*.{cjs,js,json,jsx,mjs,toml,yaml,yml}'
+
+  pylint:
+    desc: 'Run pylint'
+    cmds:
+      - |
+        {{.__TF_MISE_E_UV_RUN}} pylint {{.CLI_ARGS}}
+    silent: true
+    sources:
+      - '**/*.py'
+
+  pwshlint_py:
+    desc: 'Run PSScriptAnalyzer'
+    cmds:
+      - |
+        {{.__TF_MISE_E_UV_RUN}} .scripts/pwshlint.py {{.CLI_ARGS}}
+    silent: true
+    sources:
+      - '**/*.ps1'
+
+  ruff:
+    desc: 'Run Ruff'
+    cmds:
+      - |
+        {{.__TF_MISE_E_UV_RUN}} ruff {{.CLI_ARGS}}
+    silent: true
+    sources:
+      - '**/*.py'
+
+  shlint_py:
+    desc: 'Run ShellCheck'
+    cmds:
+      - cmd: |
+          {{.__TF_MISE_E}} python .scripts/shlint.py {{.CLI_ARGS}}
+        platforms: [darwin, linux, windows]
+    silent: true
+    sources:
+      - '**/*.sh'
 
   # ============================================================================
   # Dependencies
@@ -130,6 +273,7 @@ tasks:
     cmds:
       - task: deps:clean:mise
       - task: deps:clean:npm
+      - task: deps:clean:uv
 
   deps:clean:mise:
     desc: 'Clean Mise dependencies'
@@ -149,11 +293,20 @@ tasks:
         rm -rf node_modules package-lock.json
         echo "NodeJs environment cleaned"
 
+  deps:clean:uv:
+    desc: 'Clean Python dependencies'
+    cmds:
+      - |
+        echo "Cleaning Python dependencies..."
+        rm -rf .venv uv.lock
+        echo "Python environment cleaned"
+
   deps:refresh:
     desc: 'Refresh all project dependencies'
     cmds:
       - task: deps:refresh:mise
       - task: deps:refresh:npm
+      - task: deps:refresh:uv
 
   deps:refresh:mise:
     desc: 'Refresh all Mise packages (update dependencies)'
@@ -174,11 +327,20 @@ tasks:
           && {{.__TF_MISE_E}} npm audit fix
         echo "Packages refreshed"
 
+  deps:refresh:uv:
+    desc: 'Refresh all Python packages (update dependencies)'
+    cmds:
+      - |
+        echo "Refreshing Python packages..."
+        {{.__TF_MISE_E}} uv sync --upgrade
+        echo "Packages refreshed"
+
   deps:sync:
     desc: 'Install all project dependencies'
     cmds:
       - task: deps:sync:mise
       - task: deps:sync:npm
+      - task: deps:sync:uv
 
   deps:sync:mise:
     desc: 'Install Mise dependencies'
@@ -197,6 +359,14 @@ tasks:
         {{.__TF_MISE_E}} npm install
         {{.__TF_MISE_E}} npx husky
         echo "NodeJs environment ready"
+
+  deps:sync:uv:
+    desc: 'Install Python dependencies'
+    cmds:
+      - |
+        echo "Installing Python dependencies..."
+        {{.__TF_MISE_E}} uv sync
+        echo "Python environment ready"
 
   # ============================================================================
   # Development Tools

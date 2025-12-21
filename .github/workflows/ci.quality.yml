@@ -27,6 +27,7 @@ jobs:
       - name: Build
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PYTHONIOENCODING: utf-8
         run: task build
         shell: bash
 
@@ -81,12 +82,15 @@ jobs:
       - uses: ./.github/actions/setup-tools
 
       - name: Check Code Formatting
+        env:
+          PYTHONIOENCODING: utf-8
         run: task format:check
         shell: bash
 
       - name: Lint Code
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PYTHONIOENCODING: utf-8
         run: task lint:check
         shell: bash
 
@@ -101,6 +105,7 @@ jobs:
       - name: Run Tests
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PYTHONIOENCODING: utf-8
         run: task test
         shell: bash
 
@@ -108,6 +113,7 @@ jobs:
         if: inputs.runs-on == 'ubuntu-latest'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PYTHONIOENCODING: utf-8
         run: task test:coverage
         shell: bash
 
@@ -119,5 +125,7 @@ jobs:
       - uses: ./.github/actions/setup-tools
 
       - name: Run duplicate check
+        env:
+          PYTHONIOENCODING: utf-8
         run: task duplicate-check
         shell: bash

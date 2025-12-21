@@ -84,6 +84,7 @@ Thumbs.db
 *.pyc
 *.pyd
 *.pyo
+.ruff_cache/
 .venv/
 __pycache__/
 

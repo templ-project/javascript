@@ -120,12 +120,12 @@ CI runs additional checks:
 
 ```javascript
 // ES Modules
-import {hello, Greeter} from "@templ-project/javascript-template";
+import { hello, Greeter } from "@templ-project/javascript-template";
 ```
 
 ```javascript
 // CommonJS
-const {hello} = require("@templ-project/javascript-template");
+const { hello } = require("@templ-project/javascript-template");
 ```
 
 ```html

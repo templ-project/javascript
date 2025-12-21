@@ -17,6 +17,7 @@
 .prettierignore
 .PSScriptAnalyzerSettings.psd1
 .ruff_cache/
+.scripts/
 .shellcheckrc
 .venv/
 # changelog is automatically generated, it cannot be linted

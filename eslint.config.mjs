@@ -7,6 +7,7 @@ export default [
       '**/*.config.js',
       '**/*.config.mjs',
       '*.html',
+      '*.md',
       '.eslintignore',
       '.gitignore',
       '.jscpd/**',

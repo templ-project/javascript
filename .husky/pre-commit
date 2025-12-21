@@ -1,5 +1,3 @@
-mise exec -- npx lint-staged
-
-mise exec -- task duplicate-check license-check audit-check
+task lint-staged duplicate-check license-check audit-check
 
 git add .
