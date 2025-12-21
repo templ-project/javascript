@@ -48,9 +48,9 @@ runs:
       continue-on-error: true
       if: ${{ runner.os != 'Windows' }}
       with:
-        key: ${{ runner.os }}-${{ runner.arch }}-mise-${{ hashFiles('.mise.lock') }}
+        key: javascript-${{ runner.os }}-${{ runner.arch }}-mise-${{ hashFiles('mise.lock') }}
         restore-keys: |
-          ${{ runner.os }}-${{ runner.arch }}-mise-
+          javascript-${{ runner.os }}-${{ runner.arch }}-mise-
         path: |
           ~/.local/share/mise
           ~/.cache/mise
@@ -59,32 +59,21 @@ runs:
       continue-on-error: true
       if: ${{ runner.os == 'Windows' }}
       with:
-        key: ${{ runner.os }}-${{ runner.arch }}-mise-${{ hashFiles('.mise.lock') }}
+        key: javascript-${{ runner.os }}-${{ runner.arch }}-mise-${{ hashFiles('mise.lock') }}
         restore-keys: |
-          ${{ runner.os }}-${{ runner.arch }}-mise-
+          javascript-${{ runner.os }}-${{ runner.arch }}-mise-
         path: |
           ~\AppData\Local\mise\installs
           ~\.cache\mise
-
-    # === python === cache ===
-    - uses: actions/cache@v4
-      continue-on-error: true
-      if: ${{ runner.os == 'Windows' }}
-      with:
-        key: ${{ runner.os }}-${{ runner.arch }}-uv-${{ hashFiles('uv.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-${{ runner.arch }}-uv-
-        path: |
-          .venv
 
     # === node === cache ===
     - uses: actions/cache@v4
       continue-on-error: true
       if: ${{ runner.os == 'Windows' }}
       with:
-        key: ${{ runner.os }}-${{ runner.arch }}-node-${{ hashFiles('package-lock.json') }}
+        key: javascript-${{ runner.os }}-${{ runner.arch }}-node-${{ hashFiles('package-lock.json') }}
         restore-keys: |
-          ${{ runner.os }}-${{ runner.arch }}-node-
+          javascript-${{ runner.os }}-${{ runner.arch }}-node-
         path: |
           node_modules
 

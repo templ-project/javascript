@@ -1,11 +1,9 @@
-# Ignore files that don't need formatting
+# Ignore files that don't need formatting (alphabetically sorted)
 *.bats
 *.lock
 *.log
 *.ps1
-*.py
 *.sh
-.PSScriptAnalyzerSettings.psd1
 .editorconfig
 .eslintignore
 .gitattributes
@@ -14,17 +12,15 @@
 .husky/
 .jscpd/
 .mise.lock
+.npx-install/
 .prettierignore
-.ruff_cache/
 .shellcheckrc
 .venv/
-_uvx_install/
 # changelog is automatically generated, it cannot be linted
 CHANGELOG.md
-LICENSE
-VERSION
 coverage/
 dist/
 docs-html/
 LICENSE
 package-lock.json
+VERSION
