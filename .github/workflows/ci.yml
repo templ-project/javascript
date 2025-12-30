@@ -45,7 +45,7 @@ jobs:
   # Option A: build,lint,test before version bump (slower, but validates before release)
   # Option B: lint,test only before version bump (faster, build happens at release time)
   quality:
-    name: Quality (${{ matrix.platform.runs-on }})
+    name: Quality
     needs: [matrix]
     if: |
       !contains(github.event.head_commit.message, 'version_bump/')
