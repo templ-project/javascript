@@ -232,11 +232,25 @@ tasks:
 
       Examples:
         task run
-    deps:
-      - task: build
     cmds:
       - cmd: |
           {{.__TF_MISE_E}} npm run start
+
+  debug:
+    desc: 'Run application with debugger (Node.js inspector)'
+    summary: |
+      Run the application in debug mode
+
+      Builds the project and runs it with Node.js inspector enabled.
+      Connect your debugger to the inspector URL shown in the output.
+
+      Examples:
+        task debug
+    cmds:
+      - cmd: |
+          echo "Starting Node.js with inspector..."
+          echo "Open chrome://inspect in Chrome to connect debugger"
+          {{.__TF_MISE_E}} npm run start:debug
 
   # ==========================================================================
   # Documentation Tasks

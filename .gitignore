@@ -137,3 +137,6 @@ vite.config.ts.timestamp-*
 
 # Yarn Integrity file
 .yarn-integrity
+
+# PSScriptAnalyzer install script (generated)
+.github/scripts/install-psscriptanalyzer.ps1

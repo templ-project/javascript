@@ -84,6 +84,7 @@
     "pretest": "run-s clean build",
     "serve": "npx --yes serve .",
     "start": "node src/cli.js",
+    "start:debug": "node --inspect src/cli.js",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
     "test:watch": "vitest",
